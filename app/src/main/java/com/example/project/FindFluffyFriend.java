@@ -2,10 +2,12 @@ package com.example.project;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
 
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -21,7 +23,7 @@ import com.google.firebase.firestore.FirebaseFirestoreException;
 public class FindFluffyFriend extends AppCompatActivity implements AdapterView.OnItemSelectedListener{
 
 //    public dataHolder holder = null;
-
+//todo decide how to handle data
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,14 +31,20 @@ public class FindFluffyFriend extends AppCompatActivity implements AdapterView.O
         setContentView(R.layout.fluffy_friends);
         FirebaseFirestore db = FirebaseFirestore.getInstance();
 
+        // calling the action bar
+        ActionBar actionBar = getSupportActionBar();
+
+        // showing the back button in action bar
+        actionBar.setDisplayHomeAsUpEnabled(true);
+
 
         Button settingButton = findViewById(R.id.setting);
-        Button backButton = findViewById(R.id.back);
+//        Button backButton = findViewById(R.id.back);//added a default back button so no need for this back
         Button friendsButton = findViewById(R.id.friends);
         Button areaButton = findViewById(R.id.area);
 
         settingButton.setVisibility(View.VISIBLE);
-        backButton.setVisibility(View.VISIBLE);
+//        backButton.setVisibility(View.VISIBLE);
         friendsButton.setVisibility(View.VISIBLE);
         areaButton.setVisibility(View.VISIBLE);
 
@@ -44,12 +52,14 @@ public class FindFluffyFriend extends AppCompatActivity implements AdapterView.O
             //todo add conections to setting code
 
         });
-        backButton.setOnClickListener(v -> {
-            finish();
-
-        });
+//        backButton.setOnClickListener(v -> {
+//            finish();
+//
+//        });
         friendsButton.setOnClickListener(v -> {
-            setContentView(R.layout.friends_list);
+
+            Intent intent = new Intent(this, FriendsList.class);
+            startActivity(intent);
 //            adapter = new Adapter(holder);
 //
 //            RecyclerView recyclerView = findViewById(R.id.recyclerTodoItemsList);
@@ -86,6 +96,18 @@ public class FindFluffyFriend extends AppCompatActivity implements AdapterView.O
 
 
 
+    }
+    //back button
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        if ( id == android.R.id.home ) {
+            finish();
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
